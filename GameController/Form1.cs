@@ -25,7 +25,7 @@ namespace GameController
         private void setup()
         {
             newProgram = new AddProgram();
-            timeclock = new System.Timers.Timer
+            timeclock = new System.Timers.Timer(sleeptime);
             timeclock.Elapsed += OnTimedEvent; // https://goo.gl/nOvmlw
             outputTextBox.Clear();
             //TODO remove hardcoding
@@ -171,7 +171,7 @@ namespace GameController
         //TODO maybe we want to inform the user that they should not be spamming the button?
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            services.Refresh(); //desired state: true = running, false = stopped
+            services.Refresh();
             if (programState && services.Status.Equals(ServiceControllerStatus.Running))
             {
                 print(services.ServiceName + " : Is Started\n");
