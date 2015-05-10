@@ -1,0 +1,5 @@
+game launcher
+hook checks
+relaunch programs after game close
+
+game profiles
