@@ -172,22 +172,16 @@ namespace GameController
         //TODO maybe we want to inform the user that they should not be spamming the button?
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            services.Refresh();
-            if (programState)//desired state: true = running, false = stopped
+            services.Refresh(); //desired state: true = running, false = stopped
+            if (programState && services.Status.Equals(ServiceControllerStatus.Running))
             {
-                if (services.Status.Equals(ServiceControllerStatus.Running))
-                {
-                    print(services.ServiceName + " : Is Started\n");
-                    timeclock.Stop();
-                }
+                print(services.ServiceName + " : Is Started\n");
+                timeclock.Stop();
             }
-            else if (!programState)//desired state: true = running, false = stopped
+            else if (!programState && services.Status.Equals(ServiceControllerStatus.Stopped))
             {
-                if (services.Status.Equals(ServiceControllerStatus.Stopped))
-                {
-                    print(services.ServiceName + " : Is Stopped\n");
-                    timeclock.Stop();
-                }
+                print(services.ServiceName + " : Is Stopped\n");
+                timeclock.Stop();
             }
         }
     }
