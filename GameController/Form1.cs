@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ServiceProcess;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace GameController
@@ -11,9 +12,14 @@ namespace GameController
         //http://stackoverflow.com/a/1113006 service controller info
 
         private AddProgram newProgram;
+        private System.Timers.Timer timeclock;
+        private bool programState = false; //desired state: true = running, false = stopped
+        private int sleeptime = 50; //milliseconds for the timer to sleep
+
 
         public Form1()
         {
+            CheckForIllegalCrossThreadCalls = false;
             InitializeComponent();
             setup();
         }
@@ -21,17 +27,18 @@ namespace GameController
         private void setup()
         {
             newProgram = new AddProgram();
+            timeclock = new System.Timers.Timer(sleeptime);
+            timeclock.Elapsed += OnTimedEvent; //https://msdn.microsoft.com/en-us/library/system.timers.timer(v=vs.110).aspx?cs-save-lang=1&cs-lang=csharp#code-snippet-2
             outputTextBox.Clear();
             //TODO remove hardcoding
             listBox1.Items.Add("Teamviewer");
         }
 
         //TODO Colored messages
-        private void print(string text)
+        public void print(string text)
         {
             outputTextBox.AppendText(text); //print the received string
             outputTextBox.ScrollToCaret(); //Scroll the window to the newly printed line
-            
         }
 
         private bool checkSelection()
@@ -55,7 +62,6 @@ namespace GameController
         //TODO wait for process start/stop and output message that it stopped  - Hack Fix complete
         private void btnManualStart_Click(object sender, EventArgs e)
         {
-
             if (checkSelection())
             {
                 if (services.Status.Equals(ServiceControllerStatus.Stopped))
@@ -64,14 +70,8 @@ namespace GameController
                     {
                         print("Starting " + services.ServiceName + "\n");
                         services.Start();
-                        services.Refresh();
-                        while(!services.Status.Equals(ServiceControllerStatus.Running))
-                        {
-                            System.Threading.Thread.Sleep(50);
-                            services.Refresh();
-                        }
-                        print(services.ServiceName + " : Is Started\n");
-                       
+                        programState = true;
+                        timeclock.Start();
                     }
                     catch (Exception ex)
                     {
@@ -99,13 +99,8 @@ namespace GameController
                     {
                         print("Stopping " + services.ServiceName + "\n");
                         services.Stop();
-                        services.Refresh();
-                        while(!services.Status.Equals(ServiceControllerStatus.Stopped))
-                        {
-                            System.Threading.Thread.Sleep(50);
-                            services.Refresh();
-                        }
-                        print(services.ServiceName + " : Is Stopped\n");
+                        programState = false;
+                        timeclock.Start();
                     }
                     catch (Exception ex)
                     {
@@ -156,6 +151,27 @@ namespace GameController
                 newProgram = new AddProgram(); //Create a new one
                 newProgram.Show(); //Show it
                 newProgram.Focus(); //Focus it
+            }
+        }
+
+        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            services.Refresh();
+            if (programState)//desired state: true = running, false = stopped
+            {
+                if (services.Status.Equals(ServiceControllerStatus.Running))
+                {
+                    print(services.ServiceName + " : Is Started\n");
+                    timeclock.Stop();
+                }
+            }
+            else if (!programState)//desired state: true = running, false = stopped
+            {
+                if (services.Status.Equals(ServiceControllerStatus.Stopped))
+                {
+                    print(services.ServiceName + " : Is Stopped\n");
+                    timeclock.Stop();
+                }
             }
         }
     }

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GameController
@@ -17,6 +10,7 @@ namespace GameController
             InitializeComponent();
             radService.Checked = true; //Default to Service
         }
+
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             try
@@ -24,11 +18,10 @@ namespace GameController
                 string result = openFileDialog1.ShowDialog().ToString();
                 if (result == DialogResult.OK.ToString())
                 {
-                  txtPath.Text = openFileDialog1.FileName;
+                    txtPath.Text = openFileDialog1.FileName;
                 }
-
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "An Exception Occurred", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -49,7 +42,6 @@ namespace GameController
 
         private void btnAddOK_Click(object sender, EventArgs e)
         {
-
         }
 
         private void btnAddCancel_Click(object sender, EventArgs e)
