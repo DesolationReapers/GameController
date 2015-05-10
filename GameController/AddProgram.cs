@@ -26,14 +26,11 @@ namespace GameController
                 {
                   txtPath.Text = openFileDialog1.FileName;
                 }
-               
-                    
-                
-               
+
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "An Exception Occurred", MessageBoxButtons.OK, MessageBoxIcon.Error);              
+                MessageBox.Show(ex.ToString(), "An Exception Occurred", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
