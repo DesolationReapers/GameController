@@ -52,9 +52,10 @@ namespace GameController
         }
 
         //TODO add settings for handling as process or service (kill or stop)
-        //TODO wait for process start/stop and output message that it stopped
+        //TODO wait for process start/stop and output message that it stopped  - Hack Fix complete
         private void btnManualStart_Click(object sender, EventArgs e)
         {
+
             if (checkSelection())
             {
                 if (services.Status.Equals(ServiceControllerStatus.Stopped))
@@ -63,6 +64,14 @@ namespace GameController
                     {
                         print("Starting " + services.ServiceName + "\n");
                         services.Start();
+                        services.Refresh();
+                        while(!services.Status.Equals(ServiceControllerStatus.Running))
+                        {
+                            System.Threading.Thread.Sleep(50);
+                            services.Refresh();
+                        }
+                        print(services.ServiceName + " : Is Started\n");
+                       
                     }
                     catch (Exception ex)
                     {
@@ -90,6 +99,13 @@ namespace GameController
                     {
                         print("Stopping " + services.ServiceName + "\n");
                         services.Stop();
+                        services.Refresh();
+                        while(!services.Status.Equals(ServiceControllerStatus.Stopped))
+                        {
+                            System.Threading.Thread.Sleep(50);
+                            services.Refresh();
+                        }
+                        print(services.ServiceName + " : Is Stopped\n");
                     }
                     catch (Exception ex)
                     {
