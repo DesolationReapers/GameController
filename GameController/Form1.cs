@@ -14,8 +14,7 @@ namespace GameController
         private AddProgram newProgram;
         private System.Timers.Timer timeclock;
         private bool programState = false; //desired state: true = running, false = stopped
-        private int sleeptime = 50; //milliseconds for the timer to sleep
-
+        private int sleeptime = 100; //milliseconds for the timer to sleep
 
         public Form1()
         {
@@ -80,11 +79,19 @@ namespace GameController
                 }
                 else if (services.Status.Equals(ServiceControllerStatus.Running))
                 {
-                    print(services.ServiceName + " is already running." + "\n");
+                    print(services.ServiceName + " is already running\n");
+                }
+                else if (services.Status.Equals(ServiceControllerStatus.StartPending))
+                {
+                    print(services.ServiceName + " is in the process of starting\n");
+                }
+                else if (services.Status.Equals(ServiceControllerStatus.StopPending))
+                {
+                    print(services.ServiceName + " is in the process of stopping\n");
                 }
                 else
                 {
-                    print(services.ServiceName + " is " + services.Status);
+                    print(services.ServiceName + " is " + services.Status + "\n");
                 }
             }
         }
@@ -109,11 +116,19 @@ namespace GameController
                 }
                 else if (services.Status.Equals(ServiceControllerStatus.Stopped))
                 {
-                    print(services.ServiceName + " is not running." + "\n");
+                    print(services.ServiceName + " is not running\n");
+                }
+                else if (services.Status.Equals(ServiceControllerStatus.StopPending))
+                {
+                    print(services.ServiceName + " is in the process of stopping\n");
+                }
+                else if (services.Status.Equals(ServiceControllerStatus.StartPending))
+                {
+                    print(services.ServiceName + " is in the process of starting\n");
                 }
                 else
                 {
-                    print(services.ServiceName + " is " + services.Status);
+                    print(services.ServiceName + " is " + services.Status + "\n");
                 }
             }
         }
@@ -154,6 +169,7 @@ namespace GameController
             }
         }
 
+        //TODO maybe we want to inform the user that they should not be spamming the button?
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             services.Refresh();
