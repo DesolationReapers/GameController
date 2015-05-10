@@ -1,28 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.ServiceProcess;
+using System.Windows.Forms;
 
 namespace GameController
 {
     public partial class Form1 : Form
     {
+        private ServiceController services = new ServiceController();
 
-        ServiceController services = new ServiceController();
         //http://stackoverflow.com/a/1113006
-        int n = new int();
-        AddProgram newProgram;
+        private int n = new int();
+
+        private AddProgram newProgram;
+
         public Form1()
         {
             InitializeComponent();
             setup();
         }
+
         private void setup()
         {
             newProgram = new AddProgram();
@@ -35,6 +31,7 @@ namespace GameController
             outputTextBox.AppendText(text); //print the received string
             outputTextBox.ScrollToCaret(); //Scroll the window to the newly printed line
         }
+
         private bool checkSelection()
         {
             bool selection = false;
@@ -48,10 +45,10 @@ namespace GameController
                 services.Refresh();
                 selection = true;
             }
-                
 
             return selection;
         }
+
         private void btnManualStart_Click(object sender, EventArgs e)
         {
             if (checkSelection())
@@ -63,7 +60,7 @@ namespace GameController
                         print("Starting " + services.ServiceName + "\n");
                         services.Start();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         print(ex.ToString());
                     }
@@ -71,7 +68,8 @@ namespace GameController
                 else if (services.Status.Equals(ServiceControllerStatus.Running))
                 {
                     print(services.ServiceName + " is already running." + "\n");
-                }else
+                }
+                else
                 {
                     print(services.ServiceName + " is " + services.Status);
                 }
@@ -129,7 +127,7 @@ namespace GameController
                 newProgram.Show();
                 newProgram.Focus();
             }
-            catch(ObjectDisposedException)
+            catch (ObjectDisposedException)
             {
                 newProgram = new AddProgram();
                 newProgram.Show();

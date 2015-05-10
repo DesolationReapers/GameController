@@ -16,3 +16,13 @@ C:\Users\Robert\Documents\Visual Studio 2013\Projects\GameController\GameControl
 C:\Users\Robert\Documents\Visual Studio 2013\Projects\GameController\GameController\obj\Debug\GameController.csproj.GenerateResource.Cache
 C:\Users\Robert\Documents\Visual Studio 2013\Projects\GameController\GameController\obj\Debug\GameController.exe
 C:\Users\Robert\Documents\Visual Studio 2013\Projects\GameController\GameController\obj\Debug\GameController.pdb
+W:\SoulGameController\GameController\bin\Debug\GameController.exe.config
+W:\SoulGameController\GameController\obj\Debug\GameController.exe
+W:\SoulGameController\GameController\obj\Debug\GameController.pdb
+W:\SoulGameController\GameController\bin\Debug\GameController.exe
+W:\SoulGameController\GameController\bin\Debug\GameController.pdb
+W:\SoulGameController\GameController\obj\Debug\GameController.csprojResolveAssemblyReference.cache
+W:\SoulGameController\GameController\obj\Debug\GameController.AddProgram.resources
+W:\SoulGameController\GameController\obj\Debug\GameController.Form1.resources
+W:\SoulGameController\GameController\obj\Debug\GameController.Properties.Resources.resources
+W:\SoulGameController\GameController\obj\Debug\GameController.csproj.GenerateResource.Cache
