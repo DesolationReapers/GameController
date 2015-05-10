@@ -8,8 +8,7 @@ namespace GameController
     {
         private ServiceController services = new ServiceController();
 
-        //http://stackoverflow.com/a/1113006
-        private int n = new int();
+        //http://stackoverflow.com/a/1113006 service controller info
 
         private AddProgram newProgram;
 
@@ -23,13 +22,16 @@ namespace GameController
         {
             newProgram = new AddProgram();
             outputTextBox.Clear();
+            //TODO remove hardcoding
             listBox1.Items.Add("Teamviewer");
         }
 
+        //TODO Colored messages
         private void print(string text)
         {
             outputTextBox.AppendText(text); //print the received string
             outputTextBox.ScrollToCaret(); //Scroll the window to the newly printed line
+            
         }
 
         private bool checkSelection()
@@ -49,6 +51,8 @@ namespace GameController
             return selection;
         }
 
+        //TODO add settings for handling as process or service (kill or stop)
+        //TODO wait for process start/stop and output message that it stopped
         private void btnManualStart_Click(object sender, EventArgs e)
         {
             if (checkSelection())
@@ -114,9 +118,13 @@ namespace GameController
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listBox1.SelectedItem != null && listBox1.SelectedItem.Equals("Teamviewer"))
+            if (listBox1.SelectedItem != null) //Because Microsoft
             {
-                services.ServiceName = "Teamviewer";
+                //TODO remove hardcoding
+                if (listBox1.SelectedItem.Equals("Teamviewer"))
+                {
+                    services.ServiceName = "Teamviewer";
+                }
             }
         }
 
@@ -124,14 +132,14 @@ namespace GameController
         {
             try
             {
-                newProgram.Show();
-                newProgram.Focus();
+                newProgram.Show();  //Try to show the AddProgram window
+                newProgram.Focus(); //Try to focus the AddProgram window
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException) //If object was destroyed (opened previously then closed)
             {
-                newProgram = new AddProgram();
-                newProgram.Show();
-                newProgram.Focus();
+                newProgram = new AddProgram(); //Create a new one
+                newProgram.Show(); //Show it
+                newProgram.Focus(); //Focus it
             }
         }
     }
