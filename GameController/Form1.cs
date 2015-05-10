@@ -10,7 +10,6 @@ namespace GameController
         private ServiceController services = new ServiceController();
 
         //http://stackoverflow.com/a/1113006 service controller info
-
         private AddProgram newProgram;
         private System.Timers.Timer timeclock;
         private bool programState = false; //desired state: true = running, false = stopped
@@ -26,8 +25,8 @@ namespace GameController
         private void setup()
         {
             newProgram = new AddProgram();
-            timeclock = new System.Timers.Timer(sleeptime);
-            timeclock.Elapsed += OnTimedEvent; //https://msdn.microsoft.com/en-us/library/system.timers.timer(v=vs.110).aspx?cs-save-lang=1&cs-lang=csharp#code-snippet-2
+            timeclock = new System.Timers.Timer
+            timeclock.Elapsed += OnTimedEvent; // https://goo.gl/nOvmlw
             outputTextBox.Clear();
             //TODO remove hardcoding
             listBox1.Items.Add("Teamviewer");
