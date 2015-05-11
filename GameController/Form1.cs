@@ -7,7 +7,8 @@ namespace GameController
 {
     public partial class Form1 : Form
     {
-        private ServiceController services = new ServiceController();
+        private ServiceController[] services = System.ServiceProcess.ServiceController.GetServices();
+        private ServiceController selectedService = new ServiceController();
 
         //http://stackoverflow.com/a/1113006 service controller info
         private AddProgram newProgram;
@@ -29,7 +30,13 @@ namespace GameController
             timeclock.Elapsed += OnTimedEvent; // https://goo.gl/nOvmlw
             outputTextBox.Clear();
             //TODO remove hardcoding
-            listBox1.Items.Add("Teamviewer");
+            //listBox1.Items.Add("Teamviewer");
+
+            foreach (ServiceController serController in services)
+            {
+                listBox1.Items.Add(serController.ServiceName); // TODO decide on ServiceName or DisplayName
+            }
+        
         }
 
         //TODO Colored messages
@@ -42,14 +49,14 @@ namespace GameController
         private bool checkSelection()
         {
             bool selection = false;
-            if (services.ServiceName == null || services.ServiceName == "")
+            if (selectedService.ServiceName == null || selectedService.ServiceName == "")
             {
                 print("You must select a service to manage" + "\n");
             }
             else
             {
                 //print(services.ServiceName);
-                services.Refresh();
+                selectedService.Refresh();
                 selection = true;
             }
 
@@ -62,12 +69,12 @@ namespace GameController
         {
             if (checkSelection())
             {
-                if (services.Status.Equals(ServiceControllerStatus.Stopped))
+                if (selectedService.Status.Equals(ServiceControllerStatus.Stopped))
                 {
                     try
                     {
-                        print("Starting " + services.ServiceName + "\n");
-                        services.Start();
+                        print("Starting " + selectedService.ServiceName + "\n");
+                        selectedService.Start();
                         programState = true;
                         timeclock.Start();
                     }
@@ -76,21 +83,21 @@ namespace GameController
                         print(ex.ToString());
                     }
                 }
-                else if (services.Status.Equals(ServiceControllerStatus.Running))
+                else if (selectedService.Status.Equals(ServiceControllerStatus.Running))
                 {
-                    print(services.ServiceName + " is already running\n");
+                    print(selectedService.ServiceName + " is already running\n");
                 }
-                else if (services.Status.Equals(ServiceControllerStatus.StartPending))
+                else if (selectedService.Status.Equals(ServiceControllerStatus.StartPending))
                 {
-                    print(services.ServiceName + " is in the process of starting\n");
+                    print(selectedService.ServiceName + " is in the process of starting\n");
                 }
-                else if (services.Status.Equals(ServiceControllerStatus.StopPending))
+                else if (selectedService.Status.Equals(ServiceControllerStatus.StopPending))
                 {
-                    print(services.ServiceName + " is in the process of stopping\n");
+                    print(selectedService.ServiceName + " is in the process of stopping\n");
                 }
                 else
                 {
-                    print(services.ServiceName + " is " + services.Status + "\n");
+                    print(selectedService.ServiceName + " is " + selectedService.Status + "\n");
                 }
             }
         }
@@ -99,12 +106,12 @@ namespace GameController
         {
             if (checkSelection())
             {
-                if (services.Status.Equals(ServiceControllerStatus.Running))
+                if (selectedService.Status.Equals(ServiceControllerStatus.Running))
                 {
                     try
                     {
-                        print("Stopping " + services.ServiceName + "\n");
-                        services.Stop();
+                        print("Stopping " + selectedService.ServiceName + "\n");
+                        selectedService.Stop();
                         programState = false;
                         timeclock.Start();
                     }
@@ -113,21 +120,21 @@ namespace GameController
                         print(ex.ToString());
                     }
                 }
-                else if (services.Status.Equals(ServiceControllerStatus.Stopped))
+                else if (selectedService.Status.Equals(ServiceControllerStatus.Stopped))
                 {
-                    print(services.ServiceName + " is not running\n");
+                    print(selectedService.ServiceName + " is not running\n");
                 }
-                else if (services.Status.Equals(ServiceControllerStatus.StopPending))
+                else if (selectedService.Status.Equals(ServiceControllerStatus.StopPending))
                 {
-                    print(services.ServiceName + " is in the process of stopping\n");
+                    print(selectedService.ServiceName + " is in the process of stopping\n");
                 }
-                else if (services.Status.Equals(ServiceControllerStatus.StartPending))
+                else if (selectedService.Status.Equals(ServiceControllerStatus.StartPending))
                 {
-                    print(services.ServiceName + " is in the process of starting\n");
+                    print(selectedService.ServiceName + " is in the process of starting\n");
                 }
                 else
                 {
-                    print(services.ServiceName + " is " + services.Status + "\n");
+                    print(selectedService.ServiceName + " is " + selectedService.Status + "\n");
                 }
             }
         }
@@ -136,8 +143,8 @@ namespace GameController
         {
             if (checkSelection())
             {
-                services.Refresh();
-                print("[INFO] " + services.ServiceName + " " + services.Status + "\n");
+                selectedService.Refresh();
+                print("[INFO] " + selectedService.ServiceName + " " + selectedService.Status + "\n");
             }
         }
 
@@ -145,11 +152,11 @@ namespace GameController
         {
             if (listBox1.SelectedItem != null) //Because Microsoft
             {
-                //TODO remove hardcoding
-                if (listBox1.SelectedItem.Equals("Teamviewer"))
-                {
-                    services.ServiceName = "Teamviewer";
-                }
+                selectedService.ServiceName = listBox1.SelectedItem.ToString();
+               // if (listBox1.SelectedItem.Equals("Teamviewer"))
+               // {
+               //     selectedService.ServiceName = "Teamviewer";
+               // }
             }
         }
 
@@ -171,15 +178,15 @@ namespace GameController
         //TODO maybe we want to inform the user that they should not be spamming the button?
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            services.Refresh();
-            if (programState && services.Status.Equals(ServiceControllerStatus.Running))
+            selectedService.Refresh();
+            if (programState && selectedService.Status.Equals(ServiceControllerStatus.Running))
             {
-                print(services.ServiceName + " : Is Started\n");
+                print(selectedService.ServiceName + " : Is Started\n");
                 timeclock.Stop();
             }
-            else if (!programState && services.Status.Equals(ServiceControllerStatus.Stopped))
+            else if (!programState && selectedService.Status.Equals(ServiceControllerStatus.Stopped))
             {
-                print(services.ServiceName + " : Is Stopped\n");
+                print(selectedService.ServiceName + " : Is Stopped\n");
                 timeclock.Stop();
             }
         }
