@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ServiceProcess;
+using System.Diagnostics;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -9,6 +10,9 @@ namespace GameController
     {
         private ServiceController[] services = System.ServiceProcess.ServiceController.GetServices();
         private ServiceController selectedService = new ServiceController();
+
+        private Process[] systemprocesses = Process.GetProcesses();
+        private Process selectedProcess = new Process();
 
         //http://stackoverflow.com/a/1113006 service controller info
         private AddProgram newProgram;
