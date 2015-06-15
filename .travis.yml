@@ -1,0 +1,7 @@
+language: C#
+
+sudo: required
+
+notifications:
+	email: false
+	
