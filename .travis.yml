@@ -1,7 +1,5 @@
-language: C#
-
+--- 
+language: "C#"
+notifications: 
+  email: false
 sudo: required
-
-notifications:
-	email: false
-	
