@@ -1,6 +1,6 @@
 # GameController
 Profile manager for Windows
-[![Build Status](https://travis-ci.org/Soulflare3/GameController.svg?branch=master)](https://travis-ci.org/Soulflare3/GameController)
+[![Build Status](https://travis-ci.org/DesolationReapers/GameController.svg?branch=master)](https://travis-ci.org/DesolationReapers/GameController)
 
 [![forthebadge](http://forthebadge.com/images/badges/fuck-it-ship-it.svg)](http://forthebadge.com)[![forthebadge](http://forthebadge.com/images/badges/no-ragrets.svg)](http://forthebadge.com)
 
