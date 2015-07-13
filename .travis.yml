@@ -1,6 +1,6 @@
 --- 
 language: csharp
 solution: GameController.sln
-notifications: 
-  email: false
+notifications:
+  slack: desolationreapers:vU3Ck22uXcCtHiDi43vXbOYQ
 sudo: required
